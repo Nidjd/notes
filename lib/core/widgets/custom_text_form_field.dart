@@ -1,21 +1,23 @@
-
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
-    required this.emailController,
     required this.hintText,
     this.isPassword = false,
+    required this.controller,
   });
 
-  final TextEditingController emailController;
+  final TextEditingController controller;
   final String hintText;
   final bool isPassword;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: const TextStyle(
+        color: Colors.black,
+      ),
       decoration: InputDecoration(
         border: const OutlineInputBorder(
           borderSide: BorderSide.none,
@@ -27,12 +29,12 @@ class CustomTextFormField extends StatelessWidget {
           color: Colors.grey[700],
         ),
       ),
-      controller: emailController,
+      controller: controller,
       validator: (value) {
-        if (value!.isEmpty) {
+        if (value == '') {
           return 'this field mus\'t be empty !';
         }
-        return'';
+        
       },
       obscureText: isPassword,
     );
