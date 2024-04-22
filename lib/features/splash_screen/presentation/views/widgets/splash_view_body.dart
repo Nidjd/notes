@@ -58,7 +58,7 @@ class _SplashViewBodyState extends State<SplashViewBody> with SingleTickerProvid
   await Future.delayed(
       const Duration(seconds: 3),
       () {
-        GoRouter.of(context).push(AppRouter.kHomeRoute);
+        GoRouter.of(context).push(AppRouter.kSignInRoute);
       },
     );
   }
