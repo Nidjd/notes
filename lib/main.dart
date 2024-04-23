@@ -9,12 +9,11 @@ import 'package:notes/core/utils/router_app.dart';
 import 'package:notes/firebase_options.dart';
 
 void main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
- 
+
   Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
@@ -26,10 +25,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: primaryColor),
-      routerConfig:  AppRouter.router,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: primaryColor,
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: secondryColor,
+        ),
+      ),
+      routerConfig: AppRouter.router,
     );
   }
 }
