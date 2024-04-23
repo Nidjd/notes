@@ -6,12 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:notes/constants.dart';
 import 'package:notes/core/utils/assets.dart';
 import 'package:notes/core/utils/router_app.dart';
-import 'package:notes/core/utils/service_locator.dart';
+
 import 'package:notes/core/widgets/custom_progress_indicator.dart';
 import 'package:notes/core/widgets/custom_simple_text_button_without_background.dart';
 import 'package:notes/core/widgets/custom_text_button.dart';
 import 'package:notes/core/widgets/custom_text_form_field.dart';
-import 'package:notes/features/auth/data/login_repo_impl.dart';
+
 import 'package:notes/features/auth/presentation/manager/login_cubit/login_cubit.dart';
 
 class SignInBody extends StatefulWidget {
@@ -87,11 +87,12 @@ class _SignInBodyState extends State<SignInBody> {
                             color: secondryColor,
                             onPressed: () {
                               signIn();
-                             if (FirebaseAuth.instance.currentUser != null && FirebaseAuth.instance.currentUser!.emailVerified){
-                              GoRouter.of(context)
-                                  .pushReplacement(AppRouter.kHomeRoute);
-                             }
-                              
+                              if (FirebaseAuth
+                                      .instance.currentUser!.emailVerified &&
+                                  FirebaseAuth.instance.currentUser != null) {
+                                GoRouter.of(context)
+                                    .pushReplacement(AppRouter.kHomeRoute);
+                              }
                             },
                             text: 'Sign In',
                           ),
@@ -122,11 +123,7 @@ class _SignInBodyState extends State<SignInBody> {
 
   void signIn() {
     if (key.currentState!.validate()) {
-      LoginCubit(getIt.get<LoginRepoImpl>()).login(
-        email: emailController.text,
-        password: passwordController.text,
-        context: context,
-      );
+    
     }
   }
 }

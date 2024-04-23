@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,15 +7,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:notes/constants.dart';
 import 'package:notes/core/utils/assets.dart';
-import 'package:notes/core/utils/router_app.dart';
-import 'package:notes/core/utils/service_locator.dart';
+
+
 import 'package:notes/core/utils/show_alert.dart';
 import 'package:notes/core/widgets/custom_progress_indicator.dart';
 import 'package:notes/core/widgets/custom_simple_text_button_without_background.dart';
 import 'package:notes/core/widgets/custom_text_button.dart';
 import 'package:notes/core/widgets/custom_text_form_field.dart';
-import 'package:notes/features/auth/data/register_repo.dart';
-import 'package:notes/features/auth/data/register_repo_impl.dart';
+
+
 import 'package:notes/features/auth/presentation/manager/register_cubit/register_cubit.dart';
 
 class SignUpBody extends StatefulWidget {
@@ -32,20 +31,14 @@ class _SignUpBodyState extends State<SignUpBody> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  var key = GlobalKey<FormState>();
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
+  var keyForm = GlobalKey<FormState>();
+  
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Form(
-        key: key,
+        key: keyForm,
         child: BlocConsumer<RegisterCubit, RegisterState>(
           listener: (context, state) {
             // TODO: implement listener
@@ -140,15 +133,8 @@ class _SignUpBodyState extends State<SignUpBody> {
   }
 
   void signUp(String email, String password, BuildContext context) async {
-    if (key.currentState!.validate()) {
-      if (passwordController.text == confirmPasswordController.text) {
-        await RegisterCubit(
-          getIt.get<RegisterRepoImpl>(),
-        ).registerNewAccount(
-            email: email, password: password, context: context);
-      } else {
-        showAlert(context, 'the passwords do not match', 'Warning');
-      }
+    if (keyForm.currentState!.validate()) {
+      
     }
   }
 }

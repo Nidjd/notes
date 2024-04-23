@@ -25,10 +25,12 @@ class CustomFloatingActionButton extends StatelessWidget {
       onPressed: () {
         Scaffold.of(context).showBottomSheet(
           (context) => Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: Container(
                   color: thirdColor,
+                  child: Column(),
                 ),
               ),
             ],
