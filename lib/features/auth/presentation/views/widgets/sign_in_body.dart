@@ -72,9 +72,7 @@ class _SignInBodyState extends State<SignInBody> {
                 CustomTextButton(
                   color: secondryColor,
                   onPressed: () {
-                    if (key.currentState!.validate()) {
-                      
-                    }
+                    signIn();
                   },
                   text: 'Sign In',
                 ),
@@ -99,5 +97,11 @@ class _SignInBodyState extends State<SignInBody> {
         ),
       ),
     );
+  }
+
+  void signIn() {
+     if (key.currentState!.validate()) {
+      
+    }
   }
 }
