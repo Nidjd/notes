@@ -26,7 +26,7 @@ class SignInBody extends StatefulWidget {
 class _SignInBodyState extends State<SignInBody> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final key = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -40,14 +40,19 @@ class _SignInBodyState extends State<SignInBody> {
     return SafeArea(
       child: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is LoginSuccessState) {
+            if (FirebaseAuth.instance.currentUser != null &&
+                FirebaseAuth.instance.currentUser!.emailVerified) {
+              GoRouter.of(context).push(AppRouter.kHomeRoute);
+            }
+          }
         },
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(24.0),
             child: Center(
               child: Form(
-                key: key,
+                key: formKey,
                 child: ListView(
                   shrinkWrap: true,
                   children: [
@@ -85,15 +90,7 @@ class _SignInBodyState extends State<SignInBody> {
                         ? const CustomProgressIndicator()
                         : CustomTextButton(
                             color: secondryColor,
-                            onPressed: () {
-                              signIn();
-                              if (FirebaseAuth
-                                      .instance.currentUser!.emailVerified &&
-                                  FirebaseAuth.instance.currentUser != null) {
-                                GoRouter.of(context)
-                                    .pushReplacement(AppRouter.kHomeRoute);
-                              }
-                            },
+                            onPressed: signIn,
                             text: 'Sign In',
                           ),
                     const SizedBox(
@@ -121,9 +118,14 @@ class _SignInBodyState extends State<SignInBody> {
     );
   }
 
-  void signIn() {
-    if (key.currentState!.validate()) {
-    
+  void signIn() async {
+    print('abgagrargag');
+    if (formKey.currentState!.validate()) {
+      await BlocProvider.of<LoginCubit>(context).login(
+        email: emailController.text,
+        password: passwordController.text,
+        context: context,
+      );
     }
   }
 }

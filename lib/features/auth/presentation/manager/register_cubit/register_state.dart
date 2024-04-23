@@ -7,14 +7,6 @@ final class RegisterInitial extends RegisterState {}
 
 final class RegisterLoadingState extends RegisterState {}
 
-final class RegisterSuccessState extends RegisterState {
-  final UserCredential userCredential;
+final class RegisterSuccessState extends RegisterState {}
 
-  RegisterSuccessState(this.userCredential);
-}
-
-final class RegisterFailureState extends RegisterState {
-  final String errMessage;
-
-  RegisterFailureState(this.errMessage);
-}
+final class RegisterFailureState extends RegisterState {}
