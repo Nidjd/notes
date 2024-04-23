@@ -43,21 +43,15 @@ class _SignUpBodyState extends State<SignUpBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
-      bloc: RegisterCubit(getIt.get<RegisterRepoImpl>()),
-      listener: (context, state) {
-       
-        if (state is RegisterSuccessState) {
-          showAlert(context, 'please check out your email box', 'verify');
-        } else if (state is RegisterFailureState) {
-          showAlert(context, state.errMessage, 'warning !');
-        }
-      },
-      builder: (context, state) {
-        return SafeArea(
-          child: Form(
-            key: key,
-            child: Padding(
+    return SafeArea(
+      child: Form(
+        key: key,
+        child: BlocConsumer<RegisterCubit, RegisterState>(
+          listener: (context, state) {
+            // TODO: implement listener
+          },
+          builder: (context, state) {
+            return Padding(
               padding: const EdgeInsets.all(24.0),
               child: Center(
                 child: ListView(
@@ -109,12 +103,14 @@ class _SignUpBodyState extends State<SignUpBody> {
                             onPressed: () {
                               signUp(emailController.text,
                                   passwordController.text, context);
-                              if (FirebaseAuth.instance.currentUser != null &&
-                                  FirebaseAuth
-                                      .instance.currentUser!.emailVerified) {
-                                GoRouter.of(context)
-                                    .pushReplacement(AppRouter.kHomeRoute);
-                              }
+                              showAlert(context,
+                                  'Please check out your email box', 'Warning');
+                                   GoRouter.of(context).pop();
+                              // if (FirebaseAuth.instance.currentUser != null &&
+                              //     FirebaseAuth.instance.currentUser!.emailVerified) {
+                              //   GoRouter.of(context)
+                              //       .pushReplacement(AppRouter.kHomeRoute);
+                              // }
                             },
                             text: 'Sign Up',
                           ),
@@ -136,10 +132,10 @@ class _SignUpBodyState extends State<SignUpBody> {
                   ],
                 ),
               ),
-            ),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 

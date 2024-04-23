@@ -11,4 +11,11 @@ class FirebaseService {
     firebaseAuth.currentUser!.sendEmailVerification();
     return userCredential;
   }
+
+  Future<UserCredential> login(
+      {required String email, required String password}) async {
+    UserCredential user = await firebaseAuth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return user;
+  }
 }
