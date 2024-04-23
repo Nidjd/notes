@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:notes/features/auth/data/register_repo.dart';
@@ -19,7 +20,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     result.fold((l) {
       emit(RegisterFailureState(l.toString()));
     }, (r) {
-      emit(RegisterSuccessState());
+      emit(RegisterSuccessState(r));
     });
   }
 }

@@ -10,7 +10,7 @@ class RegisterRepoImpl implements RegisterRepo {
 
   RegisterRepoImpl(this.firebaseService);
   @override
-  Future<Either<String, UserCredential>> registerNewAccount(
+  Future<Either<FirebaseAuthException, UserCredential>> registerNewAccount(
       {required String email,
       required String password,
       required BuildContext context}) async {
@@ -19,7 +19,8 @@ class RegisterRepoImpl implements RegisterRepo {
           await firebaseService.register(email: email, password: password);
       return right(userCred);
     } on FirebaseAuthException catch (e) {
-      return left(e.message.toString());
+      showAlert(context, e.code, 'Warning');
+      return left(e);
     }
   }
 }

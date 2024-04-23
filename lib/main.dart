@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes/constants.dart';
+import 'package:notes/core/utils/my_bloc_observer.dart';
 import 'package:notes/core/utils/router_app.dart';
 import 'package:notes/core/utils/service_locator.dart';
 import 'package:notes/firebase_options.dart';
@@ -12,6 +14,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   setupServiceLocator();
+  Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
 

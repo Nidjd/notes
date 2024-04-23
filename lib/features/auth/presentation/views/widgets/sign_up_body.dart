@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:notes/constants.dart';
 import 'package:notes/core/utils/assets.dart';
+import 'package:notes/core/utils/router_app.dart';
 import 'package:notes/core/utils/service_locator.dart';
 import 'package:notes/core/utils/show_alert.dart';
 import 'package:notes/core/widgets/custom_progress_indicator.dart';
@@ -14,7 +17,7 @@ import 'package:notes/core/widgets/custom_text_button.dart';
 import 'package:notes/core/widgets/custom_text_form_field.dart';
 import 'package:notes/features/auth/data/register_repo.dart';
 import 'package:notes/features/auth/data/register_repo_impl.dart';
-import 'package:notes/features/auth/presentation/manager/cubit/register_cubit.dart';
+import 'package:notes/features/auth/presentation/manager/register_cubit/register_cubit.dart';
 
 class SignUpBody extends StatefulWidget {
   const SignUpBody({
@@ -41,7 +44,15 @@ class _SignUpBodyState extends State<SignUpBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterCubit, RegisterState>(
-      listener: (context, state) {},
+      bloc: RegisterCubit(getIt.get<RegisterRepoImpl>()),
+      listener: (context, state) {
+       
+        if (state is RegisterSuccessState) {
+          showAlert(context, 'please check out your email box', 'verify');
+        } else if (state is RegisterFailureState) {
+          showAlert(context, state.errMessage, 'warning !');
+        }
+      },
       builder: (context, state) {
         return SafeArea(
           child: Form(
@@ -98,6 +109,12 @@ class _SignUpBodyState extends State<SignUpBody> {
                             onPressed: () {
                               signUp(emailController.text,
                                   passwordController.text, context);
+                              if (FirebaseAuth.instance.currentUser != null &&
+                                  FirebaseAuth
+                                      .instance.currentUser!.emailVerified) {
+                                GoRouter.of(context)
+                                    .pushReplacement(AppRouter.kHomeRoute);
+                              }
                             },
                             text: 'Sign Up',
                           ),

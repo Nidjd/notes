@@ -8,6 +8,7 @@ class FirebaseService {
       {required String email, required String password}) async {
     UserCredential userCredential = await firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
+    firebaseAuth.currentUser!.sendEmailVerification();
     return userCredential;
   }
 }
