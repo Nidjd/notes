@@ -19,7 +19,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   }) async {
     emit(AddNoteLoadingState());
     try {
-     await FirebaseFirestore.instance.collection('notes').doc(currentUser!.uid).set({
+     await FirebaseFirestore.instance.collection('notes').doc(currentUser!.uid).collection('subNotes').doc().set({
         'title': title,
         'subject': subject,
         'color': color,
