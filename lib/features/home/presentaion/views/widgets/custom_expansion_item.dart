@@ -10,7 +10,7 @@ class CustomExpansionItem extends StatelessWidget {
   });
   final String title;
   final String subject;
-  final Color color;
+  final int color;
   @override
   Widget build(BuildContext context) {
     return  Padding(
@@ -23,7 +23,7 @@ class CustomExpansionItem extends StatelessWidget {
         ),
         backgroundColor: thirdColor,
         decoration: BoxDecoration(
-          color: color,
+          color: Color(color),
         ),
         children: [
           Text(
