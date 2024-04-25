@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:notes/constants.dart';
+
 import 'package:notes/core/utils/assets.dart';
 import 'package:notes/core/utils/router_app.dart';
 import 'package:notes/features/splash_screen/presentation/views/widgets/custom_slide_transition.dart';
