@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: primaryColor,
+        appBarTheme: const AppBarTheme(backgroundColor: primaryColor,),
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: secondryColor,
         ),
