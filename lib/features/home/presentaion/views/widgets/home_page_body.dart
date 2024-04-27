@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:notes/core/widgets/custom_progress_indicator.dart';
+
 import 'package:notes/features/home/presentaion/views/widgets/custom_expansion_item.dart';
 
 class HomePageBody extends StatefulWidget {
@@ -13,6 +14,16 @@ class HomePageBody extends StatefulWidget {
 }
 
 class _HomePageBodyState extends State<HomePageBody> {
+  final newTitleController = TextEditingController();
+  final newSubjectController = TextEditingController();
+
+  @override
+  void dispose() {
+    newTitleController.dispose();
+    newSubjectController.dispose();
+    super.dispose();
+  }
+
   void deleteNote(String id) {
     FirebaseFirestore.instance
         .collection('notes')
@@ -20,6 +31,28 @@ class _HomePageBodyState extends State<HomePageBody> {
         .collection('subNotes')
         .doc(id)
         .delete();
+  }
+
+  void editNote({
+    required String id,
+  }) async {
+    if (newTitleController.text == '') {
+      await FirebaseFirestore.instance
+          .collection('notes')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('subNotes')
+          .doc(id)
+          .update({
+        'subject': newSubjectController.text,
+      });
+    } else if (newSubjectController.text == '') {
+      await FirebaseFirestore.instance
+          .collection('notes')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('subNotes')
+          .doc(id)
+          .update({'title': newTitleController.text});
+    }
   }
 
   @override
@@ -46,7 +79,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                       title: const Text(
                         'Delete !',
                         style: TextStyle(
-                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       content: const Text('Are you sure ?'),
@@ -56,19 +89,88 @@ class _HomePageBodyState extends State<HomePageBody> {
                             deleteNote(snapshot.data!.docs[index].id);
                             GoRouter.of(context).pop();
                           },
-                          child: const Text('Yes'),
+                          child: const Text(
+                            'Yes',
+                            style: TextStyle(
+                              color: Colors.green,
+                            ),
+                          ),
                         ),
                         TextButton(
                           onPressed: () {
                             GoRouter.of(context).pop();
                           },
-                          child: const Text('Cancel'),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   );
                 },
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text(
+                        'Edit',
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextField(
+                            decoration: const InputDecoration(
+                              hintText: 'title',
+                            ),
+                            controller: newTitleController,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextField(
+                            controller: newSubjectController,
+                            decoration: const InputDecoration(
+                              hintText: 'subject',
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            editNote(id: snapshot.data!.docs[index].id);
+                            newSubjectController.clear();
+                            newTitleController.clear();
+                            GoRouter.of(context).pop();
+                          },
+                          child: const Text(
+                            'Edit',
+                            style: TextStyle(
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            GoRouter.of(context).pop();
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
               itemCount: snapshot.data!.docs.length,
             );
