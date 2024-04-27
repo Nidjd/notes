@@ -19,11 +19,11 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                GoRouter.of(context).pushReplacement(AppRouter.kSignInRoute);
+                await signOutAndNavigate(context);
               },
               icon: const Icon(
                 Icons.login_outlined,
+                color: Colors.white,
               ))
         ],
       ),
@@ -38,5 +38,10 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> signOutAndNavigate(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    GoRouter.of(context).pushReplacement(AppRouter.kSignInRoute);
   }
 }

@@ -97,7 +97,9 @@ class _CustomFloatingActionButtonState
                                   if (formKey.currentState!.validate()) {
                                     addNote(newColor);
                                   }
-                                  GoRouter.of(context).pop();
+                                  titleController.clear();
+                                  subjectController.clear();
+                                  // GoRouter.of(context).pop();
                                 },
                                 color: fourthColor,
                               ),
